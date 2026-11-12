@@ -5,8 +5,9 @@ import java.util.Random;
 
 public class DataGenerator {
     public static void main(String[] args) {
-        // Scaled-down Network: 3,162 nodes naturally produces ~10 million pairs
-        long numRequests = 3162; 
+        // Old target: 3,162 nodes naturally produces ~10 million pairs
+        // New Target: 10,000 nodes produces 100 million pairs
+        long numRequests = 10000; 
         Random pseudoRand = new Random();
         long linesWritten = 0;
         
@@ -22,8 +23,11 @@ public class DataGenerator {
                     // A node cannot interfere with itself
                     if (sender != receiver) {
                         
-                        // Generate a standard random affectance value between 0.0 and 1.0
-                        double affectance = pseudoRand.nextDouble();
+                        // Simulate a random distance between 1.0 and 10.0 units
+                        double distance = 1.0 + (pseudoRand.nextDouble() * 9.0);
+
+                        // Inverse-square law: affectance decreases exponentially as distance increases
+                        double affectance = 1.0 / (distance * distance);
                         
                         // Write the brute-force pair to the file
                         writer.write(sender + "," + receiver + "," + String.format("%.4f", affectance) + "\n");
